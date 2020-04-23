@@ -25,7 +25,8 @@ def total_supply(event: Dict[str, Any], context: 'bootstrap.LambdaContext') -> D
         return status_payload
 
     payload = base_payload
-    payload['body'] = status_payload['body']['total_supply']
+    status_body = json.loads(status_payload['body'])
+    payload['body'] = status_body['total_supply']
     return payload
 
 
@@ -37,8 +38,10 @@ def circulating_supply(event: Dict[str, Any], context: 'bootstrap.LambdaContext'
         # In case of error we return the same payload
         return status_payload
 
-    circulating_supply = status_payload['body']['circulating_supply']
-    if event.get('decimals'):
+    status_body = json.loads(status_payload['body'])
+    circulating_supply = status_body['circulating_supply']
+    queryStringParams = event.get('queryStringParameters')
+    if queryStringParams and queryStringParams.get('decimals') == 'true':
         # If we have decimals: true in the parameter, return as decimal
         circulating_supply /=  10**decimal_places
 

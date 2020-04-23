@@ -1,4 +1,5 @@
 import datetime
+import json
 import requests
 
 from os import path
@@ -12,7 +13,7 @@ def run(event: Dict[str, Any], context: 'bootstrap.LambdaContext') -> Dict[str, 
     """
     # Get mined tokens from full node
     response = requests.get(path.join(server, 'mined_tokens'))
-    if response and response.status_code == 200:
+    if response and response.status_code == 200 and response.json().get('mined_tokens'):
         data = response.json()
 
         mined_tokens = data['mined_tokens']
@@ -50,6 +51,6 @@ def run(event: Dict[str, Any], context: 'bootstrap.LambdaContext') -> Dict[str, 
         }
 
     payload = base_payload
-    payload['body'] = body
+    payload['body'] = json.dumps(body, indent=4).encode('utf-8')
 
     return payload
