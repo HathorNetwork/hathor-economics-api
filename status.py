@@ -2,7 +2,7 @@ import json
 
 from typing import Any, Dict
 
-from constants import base_payload
+from constants import BASE_PAYLOAD
 from util import get_economics_status, get_status_default_error
 
 
@@ -15,7 +15,7 @@ def run(event: Dict[str, Any], context: 'bootstrap.LambdaContext') -> Dict[str, 
         # In case of error we return the default error
         return get_status_default_error()
 
-    payload = base_payload
+    payload = BASE_PAYLOAD
     payload['body'] = json.dumps(status, indent=4).encode('utf-8')
 
     return payload

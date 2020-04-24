@@ -2,7 +2,7 @@ import json
 
 from typing import Any, Dict
 
-from constants import base_payload, decimal_places
+from constants import BASE_PAYLOAD, DECIMAL_PLACES
 from util import get_economics_status, get_status_default_error
 
 
@@ -14,7 +14,7 @@ def total_supply(event: Dict[str, Any], context: 'bootstrap.LambdaContext') -> D
         # In case of error we return the default error
         return get_status_default_error()
 
-    payload = base_payload
+    payload = BASE_PAYLOAD
     payload['body'] = status['total_supply']
     return payload
 
@@ -31,8 +31,8 @@ def circulating_supply(event: Dict[str, Any], context: 'bootstrap.LambdaContext'
     queryStringParams = event.get('queryStringParameters')
     if queryStringParams and queryStringParams.get('decimals') == 'true':
         # If we have decimals: true in the parameter, return as decimal
-        circulating_supply /=  10**decimal_places
+        circulating_supply /=  10**DECIMAL_PLACES
 
-    payload = base_payload
+    payload = BASE_PAYLOAD
     payload['body'] = circulating_supply
     return payload
