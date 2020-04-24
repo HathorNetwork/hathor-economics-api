@@ -1,45 +1,33 @@
 import json
 
 from typing import Any, Dict
-from boto3 import client
 
 from constants import base_payload, decimal_places
-
-lambda_client = client('lambda', region_name='us-east-1')
-
-
-def get_status_payload() -> Dict[str, Any]:
-    """ Get payload data from status lambda function
-    """
-    invoke_response = lambda_client.invoke(FunctionName='status-economic')
-    payload = json.loads(invoke_response['Payload'].read().decode('utf-8'))
-    return payload
+from util import get_economics_status, get_status_default_error
 
 
 def total_supply(event: Dict[str, Any], context: 'bootstrap.LambdaContext') -> Dict[str, Any]:
     """ Return the total supply getting data from the status lambda function
     """
-    status_payload = get_status_payload()
-    if status_payload['statusCode'] != 200:
-        # In case of error we return the same payload
-        return status_payload
+    status = get_economics_status()
+    if not status:
+        # In case of error we return the default error
+        return get_status_default_error()
 
     payload = base_payload
-    status_body = json.loads(status_payload['body'])
-    payload['body'] = status_body['total_supply']
+    payload['body'] = status['total_supply']
     return payload
 
 
 def circulating_supply(event: Dict[str, Any], context: 'bootstrap.LambdaContext') -> Dict[str, Any]:
     """ Return the circulating supply getting data from the status lambda function
     """
-    status_payload = get_status_payload()
-    if status_payload['statusCode'] != 200:
-        # In case of error we return the same payload
-        return status_payload
+    status = get_economics_status()
+    if not status:
+        # In case of error we return the default error
+        return get_status_default_error()
 
-    status_body = json.loads(status_payload['body'])
-    circulating_supply = status_body['circulating_supply']
+    circulating_supply = status['circulating_supply']
     queryStringParams = event.get('queryStringParameters')
     if queryStringParams and queryStringParams.get('decimals') == 'true':
         # If we have decimals: true in the parameter, return as decimal
