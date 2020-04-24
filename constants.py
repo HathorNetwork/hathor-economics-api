@@ -17,7 +17,7 @@ TOTAL_PREMINED = 1 * 10**9 * 10**DECIMAL_PLACES
 # Payload base for a success message of return for API gateway
 # Methods just need to fill the 'body'
 BASE_PAYLOAD = {
-    "isBase64Encoded": True,
-    "statusCode": 200,
-    "headers": {},
+    'isBase64Encoded': True,
+    'statusCode': 200,
+    'headers': {'content-type': 'text/plain'},
 }
