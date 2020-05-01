@@ -10,4 +10,4 @@ This repository has AWS lambda functions for the economics APIs.
 ## Update released premined tokens
 
 1. Update value `released_premined_tokens` at `constants.py`
-2. Deploy new lambda code: `make deploy-status env_dir=env_dir`
+2. Deploy new lambda code: `make env_dir=env_dir`
