@@ -6,8 +6,8 @@ DECIMAL_PLACES = 2
 
 # Quantity of tokens already released from the premine
 # Value is an integer
-# 20M tokens released * 10**2 for the decimal valiue
-RELEASED_PREMINED_TOKENS = 20 * 10**6 * 10**DECIMAL_PLACES
+# Tokens released * 10**2 for the decimal valiue
+RELEASED_PREMINED_TOKENS = 19740048 * 10**DECIMAL_PLACES
 
 # Premined tokens
 # Value is an integer

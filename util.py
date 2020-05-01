@@ -16,9 +16,7 @@ def get_economics_status() -> Dict[str, Any]:
     if response and response.status_code == 200 and response.json().get('success'):
         data = response.json()
 
-        # XXX After the full node is updated to the new version, uncoment the line below
-        #mined_tokens = data['mined_tokens']
-        mined_tokens = 123456
+        mined_tokens = data['mined_tokens']
         circulating_supply = mined_tokens + RELEASED_PREMINED_TOKENS
         total_supply = mined_tokens + TOTAL_PREMINED
 

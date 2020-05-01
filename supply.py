@@ -27,12 +27,17 @@ def circulating_supply(event: Dict[str, Any], context: 'bootstrap.LambdaContext'
         # In case of error we return the default error
         return get_status_default_error()
 
+    payload = BASE_PAYLOAD
+
     circulating_supply = status['circulating_supply']
+    payload['body'] = circulating_supply
+
     queryStringParams = event.get('queryStringParameters')
     if queryStringParams and queryStringParams.get('decimals') == 'true':
         # If we have decimals: true in the parameter, return as decimal
         circulating_supply /=  10**DECIMAL_PLACES
+        # This fixes the case where the decimal places are .00, so we must return with all zeros
+        circulating_supply_str = '%.{}f'.format(DECIMAL_PLACES) % circulating_supply
+        payload['body'] = circulating_supply_str
 
-    payload = BASE_PAYLOAD
-    payload['body'] = circulating_supply
     return payload
