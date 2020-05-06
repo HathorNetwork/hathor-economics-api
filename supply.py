@@ -1,4 +1,5 @@
 import json
+import sys
 
 from typing import Any, Dict
 
@@ -34,6 +35,7 @@ def circulating_supply(event: Dict[str, Any], context: 'bootstrap.LambdaContext'
 
     queryStringParams = event.get('queryStringParameters')
     if queryStringParams and queryStringParams.get('decimals') == 'true':
+        assert sys.version_info >= (3, 6)
         # If we have decimals: true in the parameter, return as decimal
         circulating_supply /=  10**DECIMAL_PLACES
         # This fixes the case where the decimal places are .00, so we must return with all zeros
