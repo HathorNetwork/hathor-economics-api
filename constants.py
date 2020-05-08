@@ -19,5 +19,10 @@ TOTAL_PREMINED = 1 * 10**9 * 10**DECIMAL_PLACES
 BASE_PAYLOAD = {
     'isBase64Encoded': True,
     'statusCode': 200,
-    'headers': {'content-type': 'text/plain'},
+    'headers': {
+        'Content-Type': 'text/plain',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
+        'Access-Control-Allow-Methods': 'OPTIONS,GET'
+    },
 }
