@@ -3,7 +3,7 @@ import requests
 import sys
 
 from os import path
-from typing import Any, Dict
+from typing import Any, Dict, Union
 
 from constants import BASE_PAYLOAD, DECIMAL_PLACES, RELEASED_PREMINED_TOKENS, SERVER, TOTAL_PREMINED
 
@@ -24,17 +24,20 @@ def get_economics_status(decimals: bool, add_comma_separator: bool) -> Dict[str,
         status = {
             'latest_update': int(datetime.datetime.now().timestamp()),
             'backend': SERVER,
-            'total_supply':
-                get_decimals(total_supply, add_comma_separator) if decimals else total_supply,
-            'circulating_supply':
-                get_decimals(circulating_supply, add_comma_separator) if decimals else circulating_supply,
-            'mined_tokens':
-                get_decimals(mined_tokens, add_comma_separator) if decimals else mined_tokens,
-            'released_premined_tokens':
-                get_decimals(RELEASED_PREMINED_TOKENS, add_comma_separator) if decimals else RELEASED_PREMINED_TOKENS,
+            'total_supply': format_amount(total_supply, decimals, add_comma_separator),
+            'circulating_supply': format_amount(circulating_supply, decimals, add_comma_separator),
+            'mined_tokens': format_amount(mined_tokens, decimals, add_comma_separator),
+            'released_premined_tokens': format_amount(RELEASED_PREMINED_TOKENS, decimals, add_comma_separator),
         }
 
     return status
+
+
+def format_amount(value: int, decimals: bool, add_comma_separator: bool) -> Union[int, str]:
+    if decimals:
+        return get_decimals(value, add_comma_separator)
+    else:
+        return value
 
 
 def get_decimals(value: int, add_comma_separator: bool) -> str:
