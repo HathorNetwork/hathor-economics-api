@@ -44,10 +44,12 @@ def get_decimals(value: int, add_comma_separator: bool) -> str:
     assert sys.version_info >= (3, 6)
     value /= 10**DECIMAL_PLACES
     # This fixes the case where the decimal places are .00, so we must return with all zeros
-    string_formatter = '{:.{}f}'
     if add_comma_separator:
-        # Adding comma as thousands separator to string formatter
-        string_formatter = string_formatter[:2] + ',' + string_formatter[2:]
+        # Format with comma thousand separator
+        string_formatter = '{:,.{}f}'
+    else:
+        # Format only the decimals
+        string_formatter = '{:.{}f}'
 
     return string_formatter.format(value, DECIMAL_PLACES)
 
