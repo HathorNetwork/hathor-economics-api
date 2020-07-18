@@ -1,13 +1,14 @@
 import datetime
 import requests
+import sys
 
 from os import path
-from typing import Any, Dict
+from typing import Any, Dict, Union
 
-from constants import BASE_PAYLOAD, RELEASED_PREMINED_TOKENS, SERVER, TOTAL_PREMINED
+from constants import BASE_PAYLOAD, DECIMAL_PLACES, RELEASED_PREMINED_TOKENS, SERVER, TOTAL_PREMINED
 
 
-def get_economics_status() -> Dict[str, Any]:
+def get_economics_status(decimals: bool, add_comma_separator: bool) -> Dict[str, Any]:
     """ Get economics status data
     """
     status = None
@@ -23,13 +24,34 @@ def get_economics_status() -> Dict[str, Any]:
         status = {
             'latest_update': int(datetime.datetime.now().timestamp()),
             'backend': SERVER,
-            'total_supply': total_supply,
-            'circulating_supply': circulating_supply,
-            'mined_tokens': mined_tokens,
-            'released_premined_tokens': RELEASED_PREMINED_TOKENS
+            'total_supply': format_amount(total_supply, decimals, add_comma_separator),
+            'circulating_supply': format_amount(circulating_supply, decimals, add_comma_separator),
+            'mined_tokens': format_amount(mined_tokens, decimals, add_comma_separator),
+            'released_premined_tokens': format_amount(RELEASED_PREMINED_TOKENS, decimals, add_comma_separator),
         }
 
     return status
+
+
+def format_amount(value: int, decimals: bool, add_comma_separator: bool) -> Union[int, str]:
+    if decimals:
+        return get_decimals(value, add_comma_separator)
+    else:
+        return value
+
+
+def get_decimals(value: int, add_comma_separator: bool) -> str:
+    assert sys.version_info >= (3, 6)
+    value /= 10**DECIMAL_PLACES
+    # This fixes the case where the decimal places are .00, so we must return with all zeros
+    if add_comma_separator:
+        # Format with comma thousand separator
+        string_formatter = '{:,.{}f}'
+    else:
+        # Format only the decimals
+        string_formatter = '{:.{}f}'
+
+    return string_formatter.format(value, DECIMAL_PLACES)
 
 
 def get_status_default_error() -> Dict[str, Any]:
