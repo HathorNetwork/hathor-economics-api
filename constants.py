@@ -6,13 +6,13 @@ DECIMAL_PLACES = 2
 
 # Quantity of tokens already released from the premine
 # Value is an integer
-# Tokens released * 10**2 for the decimal valiue
-RELEASED_PREMINED_TOKENS = 32569253 * 10**DECIMAL_PLACES
+# Tokens released
+RELEASED_PREMINED_TOKENS = 32617872127
 
 # Premined tokens
 # Value is an integer
-# 1B tokens premined * 10**2 for the decimal value
-TOTAL_PREMINED = 1 * 10**9 * 10**DECIMAL_PLACES
+# 800M tokens premined * 10**2 for the decimal value
+TOTAL_PREMINED = 8 * 10**8 * 10**DECIMAL_PLACES
 
 # Payload base for a success message of return for API gateway
 # Methods just need to fill the 'body'

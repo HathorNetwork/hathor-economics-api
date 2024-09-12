@@ -1,0 +1,12 @@
+[tool.poetry]
+name = "hathor-economics-api"
+version = "0.0.1"
+description = "API to get economics data"
+authors = ["Hathor Team <contact@hathor.network>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/HathorNetwork/hathor-economics-api"
+
+[tool.poetry.dependencies]
+python = "^3.8.1"
+requests = "2.23.0"
