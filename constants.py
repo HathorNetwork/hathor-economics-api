@@ -7,7 +7,7 @@ DECIMAL_PLACES = 2
 # Quantity of tokens already released from the premine
 # Value is an integer
 # Tokens released
-RELEASED_PREMINED_TOKENS = 35924829897
+RELEASED_PREMINED_TOKENS = 37015860453
 
 # Premined tokens
 # Value is an integer
