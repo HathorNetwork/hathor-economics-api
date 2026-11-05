@@ -10,4 +10,10 @@ This repository has AWS lambda functions for the economics APIs.
 ## Update released premined tokens
 
 1. Update value `released_premined_tokens` at `constants.py`
-2. Deploy new lambda code: `make env_dir=env_dir`
+2. Deploy new lambda code: `make deps all`
+
+`make deps` installs the dependencies from `requirements.txt` into `build/deps`, built for the Lambda runtime (Python 3.13, x86_64). Keep `requirements.txt` in sync with `poetry.lock`.
+
+## Runtime
+
+The functions run on the `python3.13` Lambda runtime. The runtime is set on the functions, not in this repository. To change it, run `make update-runtime runtime=<runtime>`, then deploy code built for that runtime.

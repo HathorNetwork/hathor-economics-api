@@ -8,5 +8,5 @@ readme = "README.md"
 repository = "https://github.com/HathorNetwork/hathor-economics-api"
 
 [tool.poetry.dependencies]
-python = "^3.8.1"
-requests = "2.23.0"
+python = "^3.13"
+requests = "^2.34.2"
