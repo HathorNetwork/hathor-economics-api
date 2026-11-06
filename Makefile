@@ -1,23 +1,31 @@
 region = us-east-1
-runtime = python3.13
+python_version = 3.13
+runtime = python$(python_version)
 current_dir = $(shell pwd)
 lambda_zip = $(current_dir)/lambda.zip
 build_dir = $(current_dir)/build
 # Defaults to the clean dependency dir built by `make deps`.
 env_dir ?= $(build_dir)/deps
+# poetry export needs poetry-plugin-export; uvx brings both.
+poetry ?= uvx --from 'poetry>=2.1' --with poetry-plugin-export poetry
 functions = status-economic total-supply-economic circulating-supply-economic
 
 .PHONY: all
 all: deploy-status deploy-total-supply deploy-circulating-supply
 
-# Install the runtime dependencies for the Lambda platform (Python 3.13, x86_64),
-# whatever the local Python version is.
+# Install the locked runtime dependencies (poetry.lock) for the Lambda platform
+# (Python 3.13, x86_64), whatever the local Python version is. Needs uv.
+# uv (not pip) evaluates the lock's python_version markers against the target
+# version; pip evaluates them against the local Python and can skip every package.
 .PHONY: deps
 deps:
 	rm -rf $(build_dir)/deps
-	pip install --quiet --target $(build_dir)/deps \
-		--platform manylinux2014_x86_64 --implementation cp --python-version 3.13 \
-		--only-binary=:all: -r requirements.txt
+	mkdir -p $(build_dir)
+	$(poetry) export --only main -f requirements.txt -o $(build_dir)/requirements.txt
+	uv pip install --quiet --target $(build_dir)/deps \
+		--python-platform x86_64-manylinux2014 --python-version $(python_version) \
+		--only-binary :all: -r $(build_dir)/requirements.txt
+	test -d $(build_dir)/deps/requests
 
 # One-time change of the runtime of all functions. Deploy code built for the same runtime.
 .PHONY: update-runtime

@@ -12,7 +12,7 @@ This repository has AWS lambda functions for the economics APIs.
 1. Update value `released_premined_tokens` at `constants.py`
 2. Deploy new lambda code: `make deps all`
 
-`make deps` installs the dependencies from `requirements.txt` into `build/deps`, built for the Lambda runtime (Python 3.13, x86_64). Keep `requirements.txt` in sync with `poetry.lock`.
+`make deps` exports the locked dependencies from `poetry.lock` and installs them into `build/deps`, built for the Lambda runtime (Python 3.13, x86_64). It needs [uv](https://docs.astral.sh/uv/). To change a dependency, edit `pyproject.toml` and run `poetry lock`.
 
 ## Runtime
 
